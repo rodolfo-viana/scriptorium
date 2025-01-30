@@ -1,0 +1,22 @@
+name: Restrict PRs to Main from Staging Only
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  restrict-main-prs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if PR targets main
+        if: github.base_ref == 'main'
+        run: echo "PR targets main branch."
+
+      - name: Verify source branch is staging
+        if: github.base_ref == 'main'
+        run: |
+          if [ "${{ github.head_ref }}" != "staging" ]; then
+            echo "Error: Pull requests to 'main' must originate from 'staging' branch."
+            exit 1
+          fi
