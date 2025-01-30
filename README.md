@@ -1,5 +1,7 @@
 # Scriptorium - Advanced Logging for Python
 
+[![CI - Run Tests](https://github.com/rodolfo-viana/scriptorium/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/rodolfo-viana/scriptorium/actions/workflows/ci.yml)
+
 ## Overview
 Scriptorium is a powerful logging library for Python that enhances the built-in `logging` module with:
 
