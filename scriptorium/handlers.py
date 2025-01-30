@@ -50,6 +50,10 @@ class CompressedRotatingFileHandler(RotatingFileHandler, BaseCompressedHandler):
         if os.path.exists(old_log):
             self._compress_executor.submit(self._compress_async, old_log)
 
+    def close(self) -> None:
+        self._compress_executor.shutdown(wait=True)
+        super().close()
+
 class CompressedTimedRotatingFileHandler(TimedRotatingFileHandler, BaseCompressedHandler):
 
     def __init__(self, filename: str, when: str = "h", interval: int = 1,
