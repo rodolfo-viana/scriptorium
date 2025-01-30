@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scriptorium"
+version = "0.1.0"
+description = "Advanced logging package with asynchronous, context-aware logging"
+authors = [{ name = "Rodolfo Viana", email = "eu@rodolfoviana.com.br" }]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+    "rich>=13.0",
+]
+
+[tool.setuptools]
+packages = ["scriptorium"]
+
+[project.urls]
+Homepage = "https://github.com/rodolfo-viana/scriptorium"
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "black>=25.0", "flake8>=7.0", "mypy>=1.14"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-v --tb=short"
+testpaths = ["tests"]
+
+[tool.black]
+line-length = 88
+target-version = ['py37', 'py38', 'py39', 'py310', 'py311', 'py312', 'py313']
+
+[tool.mypy]
+python_version = "3.7"
+ignore_missing_imports = true
+
+[tool.flake8]
+max-line-length = 88
+exclude = [".git", "__pycache__", "build", "dist"]
