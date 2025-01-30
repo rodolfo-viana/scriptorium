@@ -10,10 +10,9 @@ LOG_FILE = "test.log"
 
 @pytest.fixture(autouse=True)
 def cleanup():
-    """Cleanup test log files after each test."""
-    yield  # Run the test first
+    yield
     
-    time.sleep(0.5)  # Ensure all logging is finished
+    time.sleep(0.5)
 
     if os.path.exists(LOG_FILE):
         os.remove(LOG_FILE)
@@ -23,40 +22,33 @@ def cleanup():
         os.remove(rotated_log)
 
 def test_log_rotation():
-    """Ensure logs rotate and compress correctly."""
     logger = get_logger("test_rotation", log_file=LOG_FILE)
     
-    # Write enough logs to trigger rotation
     for _ in range(5000):
         logger.info("This is a test log entry")
 
-    # Ensure logs are written before checking files
     time.sleep(0.5)
 
-    close_logger(logger)  # Close handlers before checking file existence
+    close_logger(logger)
 
-    # Ensure the rotated log file exists
     assert os.path.exists(LOG_FILE), "Log file was not created"
     
     rotated_log = LOG_FILE + ".1.gz"
     assert os.path.exists(rotated_log), f"Rotated log file {rotated_log} not found"
 
 def test_compressed_log_integrity():
-    """Check if compressed logs are valid gzip files."""
     logger = get_logger("test_rotation", log_file=LOG_FILE)
 
-    # Write enough logs to trigger rotation
     for _ in range(5000):
         logger.info("This is a test log entry")
 
     time.sleep(0.5)
     
-    close_logger(logger)  # Close handlers before accessing the file
+    close_logger(logger)
 
     rotated_log = LOG_FILE + ".1.gz"
     assert os.path.exists(rotated_log), f"Compressed log file {rotated_log} does not exist"
 
-    # Read and verify gzip content
     with gzip.open(rotated_log, "rt") as f:
         content = f.read()
 
