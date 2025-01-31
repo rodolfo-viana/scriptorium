@@ -1,9 +1,13 @@
-name: CI - Run Tests
+name: Tests
 
 on:
   push:
-    branches:
-      - main
+    branches: main
+  pull_request:
+    branches: main
+
+permissions:
+  contents: read
 
 jobs:
   test:
