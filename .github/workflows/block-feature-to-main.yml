@@ -1,0 +1,20 @@
+name: Prevent Direct PRs to Main
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  block_feature_prs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR source branch
+        run: |
+          BASE_BRANCH="${{ github.event.pull_request.base.ref }}"
+          HEAD_BRANCH="${{ github.event.pull_request.head.ref }}"
+          
+          if [[ "$BASE_BRANCH" == "main" && "$HEAD_BRANCH" != "staging" ]]; then
+            echo "❌ PRs to 'main' are only allowed from 'staging'."
+            exit 1
+          fi
